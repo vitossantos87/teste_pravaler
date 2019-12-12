@@ -10,8 +10,8 @@
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Teste de Lógica 1</a>
-                    <a href="https://laracasts.com">Teste de Lógica 2</a>
+                    <a href="{{route('teste1')}}">Teste de Lógica 1</a>
+                    <a href="{{route('teste2')}}">Teste de Lógica 2</a>
                     <a href="https://laravel-news.com">Sistema SGIE</a>
                 </div>
             </div>
