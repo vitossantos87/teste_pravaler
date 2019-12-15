@@ -12,7 +12,7 @@
                 <div class="links">
                     <a href="{{route('teste1')}}">Teste de Lógica 1</a>
                     <a href="{{route('teste2')}}">Teste de Lógica 2</a>
-                    <a href="https://laravel-news.com">Sistema SIGIE</a>
+                    <a href="{{route("home")}}">Sistema SIGIE</a>
                 </div>
             </div>
 @stop

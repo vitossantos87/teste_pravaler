@@ -18,6 +18,10 @@ Route::get('/', function () {
 Route::get('/teste-logica-1', 'TesteLogica1Controller@index')->name('teste1');
 Route::get('/teste-logica-2', 'TesteLogica2Controller@index')->name('teste2');
 
-Auth::routes();
+#rotas do sistema de autenticacao
+Auth::routes(['register' => false]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+#rotas do sistema SIGIE
+Route::prefix('sigie')->middleware(['auth'])->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+});
