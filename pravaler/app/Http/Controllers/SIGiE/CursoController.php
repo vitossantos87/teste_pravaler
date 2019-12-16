@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SIGIE;
 
 use App\Http\Controllers\Controller;
+use App\Models\CursoModel;
 use Illuminate\Http\Request;
 
 class CursoController extends Controller
@@ -14,7 +15,8 @@ class CursoController extends Controller
      */
     public function index()
     {
-        //
+        $cursos = CursoModel::where('status', '=', 1)->paginate(20);
+        return view('SIGIE.curso.list_curso', ['cursos' => $cursos]);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class AlunoRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class AlunoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -58,5 +59,13 @@ class AlunoRequest extends FormRequest
             'cidade.required'  => 'O campo cidade é Obrigatório',
             'uf.required'  => 'O campo UF é Obrigatório'
         ];
+    }
+
+
+
+
+    protected function failedValidation(Validator $validator)
+    {
+        $this->validator = $validator;
     }
 }

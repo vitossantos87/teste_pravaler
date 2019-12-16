@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SIGIE;
 
 use App\Http\Controllers\Controller;
+use App\Models\AlunoModel;
 use Illuminate\Http\Request;
 
 class AlunoController extends Controller
@@ -14,7 +15,8 @@ class AlunoController extends Controller
      */
     public function index()
     {
-        //
+        $alunos = AlunoModel::where('status', '=', 1)->paginate(20);
+        return view('SIGIE.aluno.list_aluno', ['alunos' => $alunos]);
     }
 
     /**

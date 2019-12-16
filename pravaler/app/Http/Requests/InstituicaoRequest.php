@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class InstituicaoRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class InstituicaoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -42,5 +43,11 @@ class InstituicaoRequest extends FormRequest
             'cnpj.min' => 'O campo CNPJ é inválido'
 
         ];
+    }
+
+
+    protected function failedValidation(Validator $validator)
+    {
+        $this->validator = $validator;
     }
 }

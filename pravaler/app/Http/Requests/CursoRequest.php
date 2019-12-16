@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class CursoRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class CursoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -43,5 +44,13 @@ class CursoRequest extends FormRequest
             'duracao_semestres.numeric' => 'O campo duração deve ser um número'
 
         ];
+    }
+
+
+
+
+    protected function failedValidation(Validator $validator)
+    {
+        $this->validator = $validator;
     }
 }

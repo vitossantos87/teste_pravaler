@@ -14,7 +14,9 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <button type="button" class="btn btn-primary" onclick="window.location.href = '{{route('instituicao.index')}}';">Instituicões</button>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href = '{{route('curso.index')}}';">Cursos</button>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href = '{{route('aluno.index')}}';">Alunos</button>
                 </div>
             </div>
         </div>
