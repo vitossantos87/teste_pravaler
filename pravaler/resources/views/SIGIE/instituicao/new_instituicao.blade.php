@@ -20,12 +20,12 @@
 
                         <div class="form-group">
                           <label for="nome">Nome da Instituição</label>
-                          <input type="text" class="form-control" id="nome" name="nome" aria-describedby="Nome" placeholder="Nome">
+                          <input type="text" class="form-control" id="nome" name="nome" value="{{old('nome')}}" aria-describedby="Nome" placeholder="Nome">
                         </div>
 
                         <div class="form-group">
                             <label for="cnpj">CNPJ</label>
-                            <input type="text" class="form-control" id="cnpj" name="cnpj" aria-describedby="cnpj" placeholder="CNPJ">
+                            <input type="text" class="form-control cnpj" id="cnpj" name="cnpj" value="{{old('cnpj')}}" aria-describedby="cnpj" placeholder="CNPJ">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Salvar</button>
@@ -37,3 +37,8 @@
     </div>
 </div>
 @endsection
+@section('scripts')
+    @parent
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.min.js"></script>
+    <!--script src="{{ asset('js/instituicao.js')}}"></script-->
+@stop

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InstituicaoRequest;
 use App\Models\InstituicaoModel;
+use Log;
 
 class InstituicaoController extends Controller
 {
@@ -41,9 +42,29 @@ class InstituicaoController extends Controller
     {
         $validator = $request->validated();
 
+        $nome = $request->input('nome');
+        $cnpj = $request->input('cnpj');
+
+        if(InstituicaoModel::jaExiste($cnpj)){
+            Message::setMessage('cnpj já está cadastrado', 'danger');
+            return redirect()->route('instituicao.create');
+        }
+
+        try {
+            $instituicao = new InstituicaoModel();
+            $instituicao->nome = $nome;
+            $instituicao->cnpj = $cnpj;
+            $instituicao->save();
+            Message::setMessage('Instituição cadastrada com sucesso', 'success');
+            return redirect()->route('instituicao.index');
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao cadastrar instituição: '. $e->getMessage());
+            Message::setMessage('Ocorreu um erro ao cadastrar a instituição', 'danger');
+            return redirect()->route('instituicao.create');
+        }
 
 
-        return view('SIGIE.instituicao.new_instituicao');
     }
 
     /**
@@ -54,7 +75,7 @@ class InstituicaoController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -65,11 +86,12 @@ class InstituicaoController extends Controller
      */
     public function edit($id)
     {
-        $instituicao = InstituicaoModel::find($id);
+        $instituicao  = InstituicaoModel::find($id);
         if(!$instituicao){
-            ;
+            Message::setMessage('Instituição não encontrada', 'danger');
+            return redirect()->route('instituicao.index');
         }
-        return view('SIGIE.instituicao.new_instituicao', []);
+        return view('SIGIE.instituicao.edit_instituicao', ['instituicao' => $instituicao]);
     }
 
     /**
@@ -79,9 +101,31 @@ class InstituicaoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(InstituicaoRequest $request, $id)
     {
-        //
+        $validator = $request->validated();
+
+        $instituicao  = InstituicaoModel::find($id);
+
+        if(!$instituicao){
+            Message::setMessage('Instituição não encontrada', 'danger');
+            return redirect()->route('instituicao.index');
+        }
+        $nome = $request->input('nome');
+        $cnpj = $request->input('cnpj');
+
+        try {
+            $instituicao->nome = $nome;
+            $instituicao->cnpj = $cnpj;
+            $instituicao->save();
+            Message::setMessage('Instituição atualizada com sucesso', 'success');
+            return redirect()->route('instituicao.index');
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao cadastrar instituição: '. $e->getMessage());
+            Message::setMessage('Ocorreu um erro ao salvar a instituição', 'danger');
+            return redirect()->route('instituicao.create');
+        }
     }
 
     /**
@@ -92,6 +136,20 @@ class InstituicaoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $instituicao  = InstituicaoModel::find($id);
+
+            if (!$instituicao) {
+                Message::setMessage('Instituição não encontrada', 'danger');
+                return redirect()->route('instituicao.index');
+            }
+            $instituicao->status = 0;
+            $instituicao->save();
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao excluir a instituição: ' . $e->getMessage());
+            Message::setMessage('Ocorreu um erro ao excluir a instituição', 'danger');
+            return redirect()->route('instituicao.create');
+        }
     }
 }

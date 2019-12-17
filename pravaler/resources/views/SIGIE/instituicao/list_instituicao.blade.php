@@ -35,13 +35,17 @@
                             <tr>
                                 <td>{{$instituicao->nome}}</td>
                                 <td>{{$instituicao->cnpj}}</td>
-                                <td></td>
+                                <td>
+                                <a  class="btn btn-outline-primary" href="{{route('instituicao.edit', $instituicao->id)}}" > Editar </a>
+                                <a  class="btn btn-outline-danger" href="{{route('instituicao.destroy', $instituicao->id)}}" > Excluir </a>
+                                </td>
                               </tr>
 
                             @endforeach
 
                         </tbody>
                       </table>
+                      {{ $instituicoes->links() }}
                     @else
                         <div class="alert alert-info" role="alert">
                          Nenhuma Instituição foi encontrada!
