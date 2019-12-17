@@ -15,17 +15,17 @@
                 <div class="card-header"> Cadastrar Instituição </div>
 
                 <div class="card-body">
-                    <form anction="{{route('instituicao.store')}}" method="POST" >
+                    <form action="{{route('instituicao.store')}}" method="POST" >
                         @csrf
 
                         <div class="form-group">
                           <label for="nome">Nome da Instituição</label>
-                          <input type="text" class="form-control" id="nome" aria-describedby="Nome" placeholder="Nome">
+                          <input type="text" class="form-control" id="nome" name="nome" aria-describedby="Nome" placeholder="Nome">
                         </div>
 
                         <div class="form-group">
                             <label for="cnpj">CNPJ</label>
-                            <input type="text" class="form-control" id="cnpj" aria-describedby="cnpj" placeholder="CNPJ">
+                            <input type="text" class="form-control" id="cnpj" name="cnpj" aria-describedby="cnpj" placeholder="CNPJ">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Salvar</button>

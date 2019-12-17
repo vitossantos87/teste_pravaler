@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\SIGIE;
 
+use App\Helpers\Message;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InstituicaoRequest;
@@ -36,9 +37,13 @@ class InstituicaoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InstituicaoRequest $request)
     {
-        return view('SIGIE.instituicao.new_instituicao', []);
+        $validator = $request->validated();
+
+
+
+        return view('SIGIE.instituicao.new_instituicao');
     }
 
     /**
