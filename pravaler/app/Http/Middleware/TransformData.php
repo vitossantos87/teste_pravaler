@@ -16,16 +16,12 @@ class TransformData
      */
     public function handle($request, Closure $next)
     {
-
-        $input = $request->all();
-
-
-        if (isset($input['cnpj'])) {
-        $input['cnpj'] = preg_replace("/([^0-9])/", '', $input['cnpj']);
-
-            // Input modification
-            $request->replace($input);
+        if ($request->isJson()) {
+            $this->clean($request->json());
+        } else {
+            $this->clean($request->request);
         }
+
         return $next($request);
     }
 
