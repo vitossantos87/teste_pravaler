@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SIGIE;
 
 use App\Http\Controllers\Controller;
 use App\Models\CursoModel;
+use App\Models\InstituicaoModel;
 use Illuminate\Http\Request;
 
 class CursoController extends Controller
@@ -13,10 +14,15 @@ class CursoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cursos = CursoModel::where('status', '=', 1)->paginate(20);
-        return view('SIGIE.curso.list_curso', ['cursos' => $cursos]);
+        $instituicoes = $instituicoes = InstituicaoModel::where('status', '=', 1)->get();
+        $filtro_instituicao = $request->input('instituicao');
+        $cursos = CursoModel::getCursos($filtro_instituicao);
+        return view('SIGIE.curso.list_curso',
+                    ['cursos' => $cursos,
+                    'instituicoes' => $instituicoes,
+                    'filtro_instituicao' => $filtro_instituicao]);
     }
 
     /**

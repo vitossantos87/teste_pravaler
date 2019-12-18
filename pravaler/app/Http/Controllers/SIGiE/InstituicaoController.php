@@ -18,6 +18,7 @@ class InstituicaoController extends Controller
      */
     public function index()
     {
+
         $instituicoes = InstituicaoModel::where('status', '=', 1)->paginate(20);
         return view('SIGIE.instituicao.list_instituicao', ['instituicoes' => $instituicoes]);
     }
