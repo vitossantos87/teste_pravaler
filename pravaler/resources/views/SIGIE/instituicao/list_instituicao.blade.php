@@ -34,10 +34,14 @@
                             @foreach ($instituicoes as $instituicao)
                             <tr>
                                 <td>{{$instituicao->nome}}</td>
-                                <td>{{$instituicao->cnpj}}</td>
+                                <td>{{Mascara::cnpj($instituicao->cnpj)}}</td>
                                 <td>
                                 <a  class="btn btn-outline-primary" href="{{route('instituicao.edit', $instituicao->id)}}" > Editar </a>
-                                <a  class="btn btn-outline-danger" href="{{route('instituicao.destroy', $instituicao->id)}}" > Excluir </a>
+                                <button type="button"  class="btn btn-outline-danger"  onclick='excluirInstituicao("form{{$instituicao->id}}");'> Excluir </button>
+                                <form action="{{route('instituicao.destroy', $instituicao->id)}}" id="form{{$instituicao->id}}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
                                 </td>
                               </tr>
 
@@ -57,3 +61,8 @@
     </div>
 </div>
 @endsection
+@section('scripts')
+    @parent
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.min.js"></script>
+    <script src="{{ asset('js/instituicao.js')}}"></script>
+@stop

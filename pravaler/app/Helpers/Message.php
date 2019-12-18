@@ -21,19 +21,19 @@ Class Message{
         switch ($type){
             case 'danger':
                 $class = 'modal-danger';
-                $titulo = "Error";
+                $titulo = "Erro";
                 break;
             case 'warning':
                 $class = 'modal-warning';
-                $titulo = "Attention";
+                $titulo = "Atenção";
                 break;
             case 'success':
                 $class = 'modal-success';
-                $titulo = "Success";
+                $titulo = "Sucesso";
                 break;
             default :
                 $class = 'modal-info';
-                $titulo = "Information";
+                $titulo = "Info";
         }
 
         Session::flash('message', ['msg' => $message,

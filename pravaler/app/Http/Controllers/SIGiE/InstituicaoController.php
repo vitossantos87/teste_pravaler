@@ -145,6 +145,9 @@ class InstituicaoController extends Controller
             }
             $instituicao->status = 0;
             $instituicao->save();
+            Message::setMessage('Instituição  excluida com sucesso!', 'success');
+            return redirect()->route('instituicao.index');
+
 
         } catch (\Exception $e) {
             Log::error('Erro ao excluir a instituição: ' . $e->getMessage());

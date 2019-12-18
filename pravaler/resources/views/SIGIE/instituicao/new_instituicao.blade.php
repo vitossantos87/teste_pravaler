@@ -25,7 +25,7 @@
 
                         <div class="form-group">
                             <label for="cnpj">CNPJ</label>
-                            <input type="text" class="form-control cnpj" id="cnpj" name="cnpj" value="{{old('cnpj')}}" aria-describedby="cnpj" placeholder="CNPJ">
+                            <input type="text" class="form-control cnpj" id="cnpj" name="cnpj" value="{{old('cnpj')}}" aria-describedby="cnpj" placeholder="CNPJ" data-inputmask="'mask': '99.999.999/9999-99'">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Salvar</button>
@@ -39,6 +39,5 @@
 @endsection
 @section('scripts')
     @parent
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.min.js"></script>
-    <!--script src="{{ asset('js/instituicao.js')}}"></script-->
+    <script type="text/javascript" src="{{ asset('js/instituicao.js')}}"></script>
 @stop

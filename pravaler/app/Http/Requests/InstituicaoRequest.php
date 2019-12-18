@@ -26,7 +26,7 @@ class InstituicaoRequest extends FormRequest
     {
         return [
             'nome' => 'required',
-            'cnpj' => 'required|min:14'
+            'cnpj' => 'required|digits:14|numeric'
         ];
     }
 
@@ -40,7 +40,8 @@ class InstituicaoRequest extends FormRequest
         return [
             'nome.required' => 'O campo nome é obrigatório',
             'cnpj.required'  => 'O campo CNPJ é Obrigatório',
-            'cnpj.min' => 'O campo CNPJ é inválido'
+            'cnpj.digits' => 'O campo CNPJ é inválido ',
+            'cnpj.numeric' => 'O CNPJ deconter apenas números'
 
         ];
     }

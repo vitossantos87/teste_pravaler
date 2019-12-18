@@ -25,7 +25,7 @@
 
                         <div class="form-group">
                             <label for="cnpj">CNPJ</label>
-                            <input type="text" class="form-control cnpj" id="cnpj" name="cnpj" value="{{$instituicao->cnpj}}" aria-describedby="cnpj" placeholder="CNPJ">
+                            <input type="text" class="form-control cnpj" id="cnpj" name="cnpj" value="{{$instituicao->cnpj}}" aria-describedby="cnpj" placeholder="CNPJ" data-inputmask="'mask': '99.999.999/9999-99'">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Salvar</button>
