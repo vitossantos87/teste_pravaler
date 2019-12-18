@@ -37,7 +37,3 @@
     </div>
 </div>
 @endsection
-@section('scripts')
-    @parent
-    <script type="text/javascript" src="{{ asset('js/instituicao.js')}}"></script>
-@stop
