@@ -106,9 +106,36 @@ class CursoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CursoRequest $request, $id)
     {
-        //
+        $validator = $request->validated();
+
+        $curso  = CursoModel::find($id);
+
+        if(!$curso){
+            Message::setMessage('Curso não encontrado', 'danger');
+            return redirect()->route('curso.index');
+        }
+
+        $nome = $request->input('nome');
+        $duracao = $request->input('duracao');
+
+        try {
+            $curso->nome = $nome;
+            $curso->duracao_semestres = $duracao;
+            $curso->save();
+
+            Message::setMessage('O curso foi alterado com sucesso', 'success');
+            return redirect()->route('curso.index');
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao cadastrar curso: '. $e->getMessage());
+            Message::setMessage('Ocorreu um erro ao salvar o curso', 'danger');
+            return redirect()->route('curso.edit')->withInput();
+        }
+
+
+
     }
 
     /**
@@ -117,8 +144,24 @@ class CursoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $curso  = CursoModel::find($id);
+        $instituicao = InstituicaoModel::find($request->input('instituicao_id'));
+
+        if(!$curso || !$instituicao){
+            Message::setMessage('Curso não encontrado', 'danger');
+            return redirect()->route('curso.index');
+        }
+
+        $excluido = CursoModel::excluirCurso($id, $instituicao->id);
+
+        if(!$excluido){
+            Message::setMessage('Ocorreu um erro ao excluir o curso!', 'danger');
+            return redirect()->route('curso.index');
+        }
+
+        Message::setMessage('O curso foi escluido com sucesso!', 'success');
+        return redirect()->route('curso.index');
     }
 }

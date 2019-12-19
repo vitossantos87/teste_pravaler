@@ -8,7 +8,7 @@ $(document).ready(function(){
 
 function excluirCurso(from){
 
-    var r = confirm("Tem certeza que deseja excluir esta instituição?");
+    var r = confirm("Tem certeza que deseja excluir este curso?");
     if (r == true) {
         $("#"+from).submit();
     } else {

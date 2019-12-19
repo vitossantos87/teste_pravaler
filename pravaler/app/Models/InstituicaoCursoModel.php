@@ -20,6 +20,9 @@ class InstituicaoCursoModel extends Model
             Log::error('Erro ao cadastrar relação curso/instituição: '. $e->getMessage());
             return false;
         }
+    }
 
+    public static function quantasInstituicoesOferecemOCurso($curso_id){
+        return self::where('curso_id', '=', $curso_id)->count();
     }
 }
