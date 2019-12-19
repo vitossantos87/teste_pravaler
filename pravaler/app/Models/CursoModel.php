@@ -72,4 +72,12 @@ class CursoModel extends Model
 
 
     }
+
+
+    public static function getCursosPorInstituicao($instituicao_id){
+        return self::where('curso.status', '=', 1)
+                    ->where('instituicoes', '=', $instituicao_id)
+                    ->join('instituicoes_cursos', 'cursos.id', '=', 'instituicoes_cursos.curso_id')
+                    ->get();
+    }
 }

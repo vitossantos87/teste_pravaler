@@ -164,4 +164,12 @@ class CursoController extends Controller
         Message::setMessage('O curso foi escluido com sucesso!', 'success');
         return redirect()->route('curso.index');
     }
+
+
+    public function getCursosAjax($instituicao_id)
+    {
+        return response()->json(
+            CursoModel::getCursosPorInstituicao($instituicao_id)
+        );
+    }
 }
