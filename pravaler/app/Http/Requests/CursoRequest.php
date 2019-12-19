@@ -26,7 +26,8 @@ class CursoRequest extends FormRequest
     {
         return [
             'nome' => 'required',
-            'duracao_semestres' => 'required|numeric'
+            'duracao_semestres' => 'required|numeric',
+            'instituicao' => 'required|numeric'
         ];
     }
 
@@ -41,7 +42,9 @@ class CursoRequest extends FormRequest
         return [
             'nome.required' => 'O campo nome é obrigatório',
             'duracao_semestres.required'  => 'O campo duração é Obrigatório',
-            'duracao_semestres.numeric' => 'O campo duração deve ser um número'
+            'duracao_semestres.numeric' => 'O campo duração deve ser um número',
+            'instituicao.required'  => 'O campo instituição é Obrigatório',
+            'instituicao.numeric' => 'Instituição inválida'
 
         ];
     }

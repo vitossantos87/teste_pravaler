@@ -39,6 +39,7 @@
                     <table class="table">
                         <thead>
                           <tr>
+                            <th scope="col">Instituição</th>
                             <th scope="col">Curso</th>
                             <th scope="col">Duração</th>
                             <th scope="col">Ações</th>
@@ -47,8 +48,9 @@
                         <tbody>
                             @foreach ($cursos as $curso)
                             <tr>
+                                <td>{{$curso->instituicao}}</td>
                                 <td>{{$curso->nome}}</td>
-                                <td>{{$curso->duracao}} Semestres</td>
+                                <td>{{$curso->duracao_semestres}} Semestres</td>
                                 <td>
                                 <a  class="btn btn-outline-primary" href="{{route('curso.edit', $curso->id)}}" > Editar </a>
                                 <button type="button"  class="btn btn-outline-danger"  onclick='excluirCurso("form{{$curso->id}}");'> Excluir </button>

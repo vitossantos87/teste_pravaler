@@ -48,7 +48,7 @@ class InstituicaoController extends Controller
 
         if(InstituicaoModel::jaExiste($cnpj)){
             Message::setMessage('cnpj já está cadastrado', 'danger');
-            return redirect()->route('instituicao.create');
+            return redirect()->route('instituicao.create')->withInput();
         }
 
         try {
@@ -62,7 +62,7 @@ class InstituicaoController extends Controller
         } catch (\Exception $e) {
             Log::error('Erro ao cadastrar instituição: '. $e->getMessage());
             Message::setMessage('Ocorreu um erro ao cadastrar a instituição', 'danger');
-            return redirect()->route('instituicao.create');
+            return redirect()->route('instituicao.create')->withInput();
         }
 
 
@@ -125,7 +125,7 @@ class InstituicaoController extends Controller
         } catch (\Exception $e) {
             Log::error('Erro ao cadastrar instituição: '. $e->getMessage());
             Message::setMessage('Ocorreu um erro ao salvar a instituição', 'danger');
-            return redirect()->route('instituicao.create');
+            return redirect()->route('instituicao.edit', $id);
         }
     }
 
