@@ -140,8 +140,10 @@ class AlunoController extends Controller
             return redirect()->route('aluno.edit', $id);
         }
 
+        $instituicao_id  = $request->input('instituicao');
+
         try {
-            $salvo = AlunoModel::editarAluno($aluno->id, $aluno->curso_id, $request->all());
+            $salvo = AlunoModel::editarAluno($aluno->id, $aluno->curso_id, $instituicao_id ,  $request->all());
             if($salvo === TRUE){
                 Message::setMessage('O Aluno foi salvo com sucesso', 'success');
                 return redirect()->route('aluno.index');
@@ -165,6 +167,19 @@ class AlunoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $aluno = AlunoModel::getAluno($id);
+
+        if(!$aluno){
+            Message::setMessage('O aluno não foi encontrado', 'danger');
+            return redirect()->route('aluno.index');
+        }
+        $excluido = AlunoModel::excluirAluno($id);
+        if($excluido){
+            Message::setMessage('O aluno foi excluido com sucesso!', 'success');
+            return redirect()->route('aluno.index');
+        }
+        Message::setMessage('Ocorreu um erro ao excluir o aluno', 'danger');
+        return redirect()->route('aluno.index');
+
     }
 }

@@ -4,14 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
+use DB;
 
 class MatriculaModel extends Model
 {
     protected $table = 'matriculas';
+
     protected $fillable = ['aluno_id', 'curso_id','status'];
 
+    public $incrementing = false;
 
-    public static function matriculaAluno($curso_id, $aluno_id){
+
+    public static function matriculaAluno($curso_id, $aluno_id, $instituicao_id){
         try {
             $qtd_matriculas = self::where('aluno_id', '=', $aluno_id)
                                 ->where('status', '=', 1)
@@ -23,6 +27,7 @@ class MatriculaModel extends Model
 
             $matricula = self::where('aluno_id', '=', $aluno_id)
                                 ->where('curso_id', '=', $curso_id)
+                                ->where('instituicao_id', '=', $instituicao_id)
                                 ->first();
             if($matricula){
                 $matricula->status = 1;
@@ -33,6 +38,7 @@ class MatriculaModel extends Model
             $matricula = new MatriculaModel();
             $matricula->aluno_id = $aluno_id;
             $matricula->curso_id = $curso_id;
+            $matricula->instituicao_id = $instituicao_id;
             $matricula->save();
 
             return true;
@@ -46,19 +52,23 @@ class MatriculaModel extends Model
 
     }
 
-    public static function varificaMatriculaAluno($curso_anterior, $curso_atual, $aluno_id){
-        if($curso_anterior == $curso_atual){
+    public static function varificaMatriculaAluno($curso_anterior, $curso_atual, $aluno_id, $instituicao_anterior, $instituicao_atual){
+        if($curso_anterior == $curso_atual && $instituicao_anterior == $instituicao_atual){
             return true;
         }
         try {
 
             $matricula = self::where('aluno_id', '=', $aluno_id)
                                 ->where('curso_id', '=', $curso_anterior)
+                                ->where('curso_id', '=', $instituicao_anterior)
                                 ->first();
             if($matricula){
-                $matricula->curso_id = $curso_atual;
-                $matricula->status = 1;
-                $matricula->save();
+                DB::table('matriculas')
+                    ->where('aluno_id', '=' , $aluno_id)
+                    ->where('curso_id', '=', $curso_anterior)
+                    ->where('curso_id', '=', $instituicao_anterior)
+                    ->update(['curso_id' => $curso_atual, 'instituicao_id' => $instituicao_atual,  'status' => 1 ]);
+
                 return true;
             }
 
@@ -73,5 +83,17 @@ class MatriculaModel extends Model
             return 'Erro ao matricular aluno';
         }
 
+    }
+
+    public static function desmatricularAluno($aluno_id){
+        try {
+            DB::table('matriculas')
+                    ->where('aluno_id', '=' , $aluno_id)
+                    ->update(['status' => 0 ]);
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Erro ao desmatricular aluno' . $e->getMessage());
+            return false;
+        }
     }
 }

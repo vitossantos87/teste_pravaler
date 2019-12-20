@@ -74,7 +74,6 @@
                                 <form action="{{route('aluno.destroy', $aluno->id)}}" id="form{{$aluno->id}}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <input type="hidden" name="curso_id" id="curso_id" value="{{$aluno->curso_id}}" >
                                 </form>
                                 </td>
                               </tr>

@@ -72,6 +72,9 @@ function limparComboCursoCadastro(){
     $('#curso').html('');
     $('#curso').append("<option value=''>Selecione a instituicao</option>");
 }
+
+
+
 function excluirAluno(from){
 
     var r = confirm("Tem certeza que deseja excluir este Aluno?");

@@ -36,6 +36,7 @@ class AlunoRequest extends FormRequest
             'cidade' => 'required',
             'uf' => 'required',
             'curso' => 'required',
+            'instituicao' => 'required',
         ];
     }
 
@@ -60,7 +61,8 @@ class AlunoRequest extends FormRequest
             'bairro.required'  => 'O campo bairro é Obrigatório',
             'cidade.required'  => 'O campo cidade é Obrigatório',
             'uf.required'  => 'O campo UF é Obrigatório',
-            'curso.required'  => 'O campo curso é Obrigatório'
+            'curso.required'  => 'O campo curso é Obrigatório',
+            'instituicao.required'  => 'O campo instituição é Obrigatório'
         ];
     }
 

@@ -25,14 +25,13 @@ class AlunoModel extends Model
         }
 
         if(!empty($filtro_instituicao)){
-            $alunos->where('instituicoes_cursos.instituicao_id', '=', $filtro_instituicao);
+            $alunos->where('matriculas.instituicao_id', '=', $filtro_instituicao);
         }
 
         return $alunos
                 ->join('matriculas', 'alunos.id', '=', 'matriculas.aluno_id')
                 ->join('cursos', 'cursos.id', '=', 'matriculas.curso_id')
-                ->join('instituicoes_cursos', 'cursos.id', '=', 'instituicoes_cursos.curso_id')
-                ->join('instituicoes', 'instituicoes.id', '=', 'instituicoes_cursos.instituicao_id')
+                ->join('instituicoes', 'instituicoes.id', '=', 'matriculas.instituicao_id')
                 ->select('alunos.*', 'instituicoes.nome as instituicao', 'instituicoes.id as instituicao_id' ,  'cursos.nome as curso', 'cursos.id as curso_id')
                 ->paginate(20);
 
@@ -59,7 +58,7 @@ class AlunoModel extends Model
             $aluno->uf = $dados['uf'];
             $aluno->status = 1;
             $aluno->save();
-            $matriculado = MatriculaModel::matriculaAluno($dados['curso'], $aluno->id);
+            $matriculado = MatriculaModel::matriculaAluno($dados['curso'], $aluno->id, $dados['instituicao']);
 
             if($matriculado === TRUE){
                 DB::commit();
@@ -84,8 +83,7 @@ class AlunoModel extends Model
                         ->where('cursos.status', '=', 1)
                         ->join('matriculas', 'alunos.id', '=', 'matriculas.aluno_id')
                         ->join('cursos', 'cursos.id', '=', 'matriculas.curso_id')
-                        ->join('instituicoes_cursos', 'cursos.id', '=', 'instituicoes_cursos.curso_id')
-                        ->join('instituicoes', 'instituicoes.id', '=', 'instituicoes_cursos.instituicao_id')
+                        ->join('instituicoes', 'instituicoes.id', '=', 'matriculas.instituicao_id')
                         ->select('alunos.*', 'instituicoes.nome as instituicao', 'instituicoes.id as instituicao_id' ,  'cursos.nome as curso', 'cursos.id as curso_id')
                         ->first();
 
@@ -93,7 +91,7 @@ class AlunoModel extends Model
     }
 
 
-    public static function editarAluno($aluno_id, $curso_id, $dados){
+    public static function editarAluno($aluno_id, $curso_id, $instituicao, $dados){
 
         $aluno = self::find($aluno_id);
         if(!$aluno){
@@ -114,7 +112,7 @@ class AlunoModel extends Model
             $aluno->uf = $dados['uf'];
             $aluno->status = 1;
             $aluno->save();
-            $matriculado = MatriculaModel::varificaMatriculaAluno($curso_id, $dados['curso'], $aluno->id);
+            $matriculado = MatriculaModel::varificaMatriculaAluno($curso_id, $dados['curso'], $aluno->id, $instituicao, $dados['instituicao']);
 
             if($matriculado === TRUE){
                 DB::commit();
@@ -127,6 +125,37 @@ class AlunoModel extends Model
             DB::rollBack();
             Log::error('Erro ao editar aluno:' . $e->getMessage());
             throw new \Exception("Erro ao Editar o aluno");
+        }
+    }
+
+
+    public static function excluirAluno($aluno_id){
+        $aluno = self::find($aluno_id);
+
+        if(!$aluno){
+            Log::error('Erro ao editar aluno: Não existe');
+            return false;
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $aluno->status = false;
+            $aluno->save();
+
+            $desmatriculado = MatriculaModel::desmatricularAluno($aluno_id);
+
+            if($desmatriculado === TRUE){
+                DB::commit();
+                return true;
+            }
+            DB::rollBack();
+            return false;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erro ao deleter aluno:' . $e->getMessage());
+            return false;
         }
     }
 }
