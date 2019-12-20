@@ -17,3 +17,21 @@ Route::get('/', function () {
 
 Route::get('/teste-logica-1', 'TesteLogica1Controller@index')->name('teste1');
 Route::get('/teste-logica-2', 'TesteLogica2Controller@index')->name('teste2');
+
+#rotas do sistema de autenticacao
+Auth::routes(['register' => false]);
+
+#rotas do sistema SIGIE
+Route::prefix('sigie')->middleware(['auth'])->group(function () {
+
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::resource('instituicao', 'SIGIE\InstituicaoController');
+
+    Route::resource('aluno', 'SIGIE\AlunoController');
+
+    Route::resource('curso', 'SIGIE\CursoController');
+
+    Route::get('/curso/filtroAjax/{instituicao_id}', 'SIGIE\CursoController@getCursosAjax')->name('curso.filtroAjax');
+
+});

@@ -226,6 +226,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        #criado
+        'Mascara' => \App\Helpers\Mascara::class,
+        'Message' => \App\Helpers\Message::class,
+        'Transformer' => \App\Helpers\Transformer::class,
     ],
 
 ];

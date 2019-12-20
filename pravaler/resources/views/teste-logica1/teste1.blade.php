@@ -1,4 +1,4 @@
-@extends('layout.principal')
+@extends('layouts.principal')
 @section('title', 'Teste 1')
 @section('styles')
     @parent
