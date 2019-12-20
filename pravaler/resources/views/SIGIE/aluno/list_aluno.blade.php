@@ -69,12 +69,12 @@
                                 <td>{{$aluno->curso}}</td>
                                 <td>{{$aluno->nome}}</td>
                                 <td>
-                                <a  class="btn btn-outline-primary" href="{{route('curso.edit', $curso->id)}}" > Editar </a>
-                                <button type="button"  class="btn btn-outline-danger"  onclick='excluirCurso("form{{$curso->id}}");'> Excluir </button>
-                                <form action="{{route('aluno.destroy', $curso->id)}}" id="form{{$curso->id}}" method="POST">
+                                <a  class="btn btn-outline-primary" href="{{route('aluno.edit', $aluno->id)}}" > Editar </a>
+                                <button type="button"  class="btn btn-outline-danger"  onclick='excluirAluno("form{{$aluno->id}}");'> Excluir </button>
+                                <form action="{{route('aluno.destroy', $aluno->id)}}" id="form{{$aluno->id}}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <input type="hidden" name="instituicao_id" id="instituicao_id" value="{{$curso->instituicao_id}}" >
+                                    <input type="hidden" name="curso_id" id="curso_id" value="{{$aluno->curso_id}}" >
                                 </form>
                                 </td>
                               </tr>

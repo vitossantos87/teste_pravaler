@@ -228,6 +228,8 @@ return [
 
         #criado
         'Mascara' => \App\Helpers\Mascara::class,
+        'Message' => \App\Helpers\Message::class,
+        'Transformer' => \App\Helpers\Transformer::class,
     ],
 
 ];

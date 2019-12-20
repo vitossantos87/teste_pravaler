@@ -5,8 +5,11 @@ namespace App\Http\Controllers\SIGIE;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AlunoRequest;
 use App\Models\AlunoModel;
+use App\Models\CursoModel;
 use App\Models\InstituicaoModel;
 use Illuminate\Http\Request;
+use App\Helpers\Message;
+use Log;
 
 class AlunoController extends Controller
 {
@@ -22,10 +25,10 @@ class AlunoController extends Controller
         $filtro_instituicao = $request->input('filtro_instituicao');
         $filtro_curso = $request->input('filtro_curso');
 
-        $cursos = AlunoModel::getAlunos($filtro_curso,$filtro_instituicao);
+        $alunos = AlunoModel::getAlunos($filtro_curso,$filtro_instituicao);
 
         return view('SIGIE.aluno.list_aluno',
-                    ['cursos' => $cursos,
+                    ['alunos' => $alunos,
                     'instituicoes' => $instituicoes,
                     'filtro_instituicao' => $filtro_instituicao,
                     'filtro_curso' => $filtro_curso]);
@@ -51,6 +54,32 @@ class AlunoController extends Controller
     public function store(AlunoRequest $request)
     {
         $validator = $request->validated();
+
+        $curso_id  = $request->input('curso');
+        $curso = CursoModel::where('id', '=', $curso_id)
+                            ->where('status', '=', 1)
+                            ->first();
+
+        if(!$curso){
+            Message::setMessage('O Curso selecionado não foi encontrado', 'danger');
+            return redirect()->route('aluno.create')->withInput();
+        }
+        try {
+            $inserido = AlunoModel::inserirAluno($request->all());
+            if($inserido){
+                Message::setMessage('O Aluno foi inserido com sucesso', 'success');
+                return redirect()->route('aluno.index');
+
+            }
+
+            Message::setMessage($inserido, 'danger');
+            return redirect()->route('aluno.create')->withInput();
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao cadastrar aluno: '. $e->getMessage());
+            Message::setMessage('Ocorreu um erro ao salvar o aluno', 'danger');
+            return redirect()->route('aluno.create')->withInput();
+        }
     }
 
     /**
@@ -72,7 +101,15 @@ class AlunoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $aluno = AlunoModel::getAluno($id);
+
+        if(!$aluno){
+            Message::setMessage('O aluno não foi encontrado', 'danger');
+            return redirect()->route('aluno.index');
+        }
+
+        $instituicoes = $instituicoes = InstituicaoModel::where('status', '=', 1)->get();
+        return view('SIGIE.aluno.edit_aluno', ['instituicoes' => $instituicoes, 'aluno' => $aluno]);
     }
 
     /**
@@ -82,9 +119,42 @@ class AlunoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AlunoRequest $request, $id)
     {
-        //
+        $validator = $request->validated();
+
+        $aluno = AlunoModel::getAluno($id);
+
+        if(!$aluno){
+            Message::setMessage('O aluno não foi encontrado', 'danger');
+            return redirect()->route('aluno.index');
+        }
+
+        $curso_id  = $request->input('curso');
+        $curso = CursoModel::where('id', '=', $curso_id)
+                            ->where('status', '=', 1)
+                            ->first();
+
+        if(!$curso){
+            Message::setMessage('O Curso selecionado não foi encontrado', 'danger');
+            return redirect()->route('aluno.edit', $id);
+        }
+
+        try {
+            $salvo = AlunoModel::editarAluno($aluno->id, $aluno->curso_id, $request->all());
+            if($salvo === TRUE){
+                Message::setMessage('O Aluno foi salvo com sucesso', 'success');
+                return redirect()->route('aluno.index');
+            }
+
+            Message::setMessage($salvo, 'danger');
+            return redirect()->route('aluno.edit', $id);
+
+        } catch (\Exception $e) {
+            Log::error('Erro ao editar aluno: '. $e->getMessage());
+            Message::setMessage('Ocorreu um erro ao salvar o aluno', 'danger');
+            return redirect()->route('aluno.edit', $id);
+        }
     }
 
     /**

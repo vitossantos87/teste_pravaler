@@ -30,7 +30,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="data_nascimento">Data de Nascimento</label>
-                                <input type="text" class="form-control" id="data_nascimento" name="data_nascimento" value="{{$aluno->data_nascimento}}" aria-describedby="data_nascimento" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
+                                <input type="text" class="form-control" id="data_nascimento" name="data_nascimento" value="{{Transformer::dateToView($aluno->data_nascimento)}}" aria-describedby="data_nascimento" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
                             </div>
                         </div>
 
@@ -75,13 +75,13 @@
                             <select class="form-control" id="instituicao" name="instituicao">
                                 <option value="">Selecione a instituicao</option>
                                 @foreach ($instituicoes as $instituicao)
-                                    <option value="{{$instituicao->id}}" {{$aluno->instituicao == $instituicao->id ? 'selected' : ''}}>
+                                    <option value="{{$instituicao->id}}" {{$aluno->instituicao_id == $instituicao->id ? 'selected' : ''}}>
                                         {{$instituicao->nome}}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
-                        <input type="hidden" id="temp_curso" value="{{$aluno->curso}}">
+                        <input type="hidden" id="temp_curso" value="{{$aluno->curso_id}}">
                         <input type="hidden" name="url_ajax" id="url_ajax" value="{{route('curso.filtroAjax',0)}}">
 
 

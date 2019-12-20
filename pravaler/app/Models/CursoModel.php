@@ -44,7 +44,7 @@ class CursoModel extends Model
 
         if(!InstituicaoCursoModel::inserirRelacao($curso->id, $instituicao_id)){
             DB::rollBack();
-            throw new Exception("Erro ao Inserir o curso na instituição");
+            throw new \Exception("Erro ao Inserir o curso na instituição");
         }
         DB::commit();
     }

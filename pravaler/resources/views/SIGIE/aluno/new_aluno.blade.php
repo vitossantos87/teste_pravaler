@@ -82,7 +82,7 @@
                             </select>
                         </div>
                         <input type="hidden" id="temp_curso" value="{{old('curso')}}">
-                        <input type="hidden" name="url_ajax" id="url_ajax" value="{{route('curso.filtroAjax',0)}}">
+                        <input type="hidden" id="url_ajax" value="{{route('curso.filtroAjax',0)}}">
 
 
                         <div class="form-group">
