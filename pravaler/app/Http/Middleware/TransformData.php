@@ -45,7 +45,7 @@ class TransformData
     private function cleanData(array $data)
     {
         return collect($data)->map(function ($value, $key) {
-            if (in_array($key, ['cnpj', 'cpf'])) {
+            if (in_array($key, ['cnpj', 'cpf', 'celular'])) {
                 return preg_replace("/([^0-9])/", '', $value);
             } else {
                 return $value;

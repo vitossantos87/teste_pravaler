@@ -29,12 +29,13 @@ class AlunoRequest extends FormRequest
             'cpf' => 'required',
             'data_nascimento' => 'required',
             'email' => 'required|email',
-            'celular' => 'required',
+            'celular' => 'required|digits:11',
             'endereco' => 'required',
             'numero' => 'required',
             'bairro' => 'required',
             'cidade' => 'required',
-            'uf' => 'required'
+            'uf' => 'required',
+            'curso' => 'required',
         ];
     }
 
@@ -53,11 +54,13 @@ class AlunoRequest extends FormRequest
             'email.required'  => 'O campo e-mail é Obrigatório',
             'email.email'  => 'O campo e-mail não está correto',
             'celular.required'  => 'O campo celular é Obrigatório',
+            'celular.digits' => 'O celular é inválido',
             'endereco.required'  => 'O campo endereço é Obrigatório',
             'numero.required'  => 'O campo número é Obrigatório',
             'bairro.required'  => 'O campo bairro é Obrigatório',
             'cidade.required'  => 'O campo cidade é Obrigatório',
-            'uf.required'  => 'O campo UF é Obrigatório'
+            'uf.required'  => 'O campo UF é Obrigatório',
+            'curso.required'  => 'O campo curso é Obrigatório'
         ];
     }
 

@@ -18,20 +18,24 @@
                     </div>
                 </div>
                 <div class="card-header">
+
+                    <input type="hidden" name="url_ajax" id="url_ajax" value="{{route('curso.filtroAjax',0)}}">
+                    <input type="hidden" id="temp_curso" value="{{$filtro_curso}}">
+
                     <form action="{{route('aluno.index')}}" method="GET" id="form_filtro_aluno">
-                    <div class="form-group">
-                            <label for="filtro_instituicao">Filtrar Por instituição</label>
-                            <select class="form-control" id="filtro_instituicao" name="filtro_instituicao">
-                                <option value="">Selecione a instituicao</option>
-                                @foreach ($instituicoes as $instituicao)
-                                    <option value="{{$instituicao->id}}" {{$filtro_instituicao == $instituicao->id ? 'selected' : ''}}>
-                                        {{$instituicao->nome}}
-                                    </option>
-                                @endforeach
+                        <div class="form-group">
+                                <label for="filtro_instituicao">Filtrar Por instituição</label>
+                                <select class="form-control" id="filtro_instituicao" name="filtro_instituicao">
+                                    <option value="">Selecione a instituicao</option>
+                                    @foreach ($instituicoes as $instituicao)
+                                        <option value="{{$instituicao->id}}" {{$filtro_instituicao == $instituicao->id ? 'selected' : ''}}>
+                                            {{$instituicao->nome}}
+                                        </option>
+                                    @endforeach
 
-                            </select>
+                                </select>
 
-                    </div>
+                        </div>
 
                     <div class="form-group">
 
@@ -42,30 +46,32 @@
                             </select>
 
                     </div>
+
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
                     </form>
                 </div>
 
                 <div class="card-body">
-                    @if(count($cursos) > 0)
+                    @if(count($alunos) > 0)
                     <table class="table">
                         <thead>
                           <tr>
                             <th scope="col">Instituição</th>
                             <th scope="col">Curso</th>
-                            <th scope="col">Duração</th>
+                            <th scope="col">Aluno</th>
                             <th scope="col">Ações</th>
                           </tr>
                         </thead>
                         <tbody>
-                            @foreach ($cursos as $curso)
+                            @foreach ($alunos as $aluno)
                             <tr>
-                                <td>{{$curso->instituicao}}</td>
-                                <td>{{$curso->nome}}</td>
-                                <td>{{$curso->duracao_semestres}} Semestres</td>
+                                <td>{{$aluno->instituicao}}</td>
+                                <td>{{$aluno->curso}}</td>
+                                <td>{{$aluno->nome}}</td>
                                 <td>
                                 <a  class="btn btn-outline-primary" href="{{route('curso.edit', $curso->id)}}" > Editar </a>
                                 <button type="button"  class="btn btn-outline-danger"  onclick='excluirCurso("form{{$curso->id}}");'> Excluir </button>
-                                <form action="{{route('curso.destroy', $curso->id)}}" id="form{{$curso->id}}" method="POST">
+                                <form action="{{route('aluno.destroy', $curso->id)}}" id="form{{$curso->id}}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" name="instituicao_id" id="instituicao_id" value="{{$curso->instituicao_id}}" >
@@ -77,15 +83,14 @@
 
                         </tbody>
                       </table>
-                        @if(isset($filtro_instituicao))
-                            {{$cursos->appends(['filtro_instituicao' => $filtro_instituicao])->links()}}
-                        @else
-                            {{$cursos->links()}}
-                        @endif
+
+                        {{$alunos->appends(['filtro_instituicao' => $filtro_instituicao, 'filtro_curso' => $filtro_curso])->links()}}
+
+
 
                     @else
                         <div class="alert alert-info" role="alert">
-                         Nenhum curso foi encontrado!
+                         Nenhum aluno foi encontrado!
                         </div>
                     @endif
                 </div>

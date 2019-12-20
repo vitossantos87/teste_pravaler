@@ -32,4 +32,6 @@ Route::prefix('sigie')->middleware(['auth'])->group(function () {
 
     Route::resource('curso', 'SIGIE\CursoController');
 
+    Route::get('/curso/filtroAjax/{instituicao_id}', 'SIGIE\CursoController@getCursosAjax')->name('curso.filtroAjax');
+
 });

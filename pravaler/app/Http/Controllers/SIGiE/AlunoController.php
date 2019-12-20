@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\SIGIE;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AlunoRequest;
 use App\Models\AlunoModel;
+use App\Models\InstituicaoModel;
 use Illuminate\Http\Request;
 
 class AlunoController extends Controller
@@ -13,10 +15,20 @@ class AlunoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $alunos = AlunoModel::where('status', '=', 1)->paginate(20);
-        return view('SIGIE.aluno.list_aluno', ['alunos' => $alunos]);
+        $instituicoes = InstituicaoModel::where('status', '=', 1)->get();
+
+        $filtro_instituicao = $request->input('filtro_instituicao');
+        $filtro_curso = $request->input('filtro_curso');
+
+        $cursos = AlunoModel::getAlunos($filtro_curso,$filtro_instituicao);
+
+        return view('SIGIE.aluno.list_aluno',
+                    ['cursos' => $cursos,
+                    'instituicoes' => $instituicoes,
+                    'filtro_instituicao' => $filtro_instituicao,
+                    'filtro_curso' => $filtro_curso]);
     }
 
     /**
@@ -26,7 +38,8 @@ class AlunoController extends Controller
      */
     public function create()
     {
-        //
+        $instituicoes = $instituicoes = InstituicaoModel::where('status', '=', 1)->get();
+        return view('SIGIE.aluno.new_aluno', ['instituicoes' => $instituicoes]);
     }
 
     /**
@@ -35,9 +48,9 @@ class AlunoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AlunoRequest $request)
     {
-        //
+        $validator = $request->validated();
     }
 
     /**

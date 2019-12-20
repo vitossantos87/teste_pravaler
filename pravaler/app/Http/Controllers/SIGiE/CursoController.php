@@ -19,7 +19,7 @@ class CursoController extends Controller
      */
     public function index(Request $request)
     {
-        $instituicoes = $instituicoes = InstituicaoModel::where('status', '=', 1)->get();
+        $instituicoes = InstituicaoModel::where('status', '=', 1)->get();
         $filtro_instituicao = $request->input('filtro_instituicao');
         $cursos = CursoModel::getCursos($filtro_instituicao);
         return view('SIGIE.curso.list_curso',
@@ -169,7 +169,7 @@ class CursoController extends Controller
     public function getCursosAjax($instituicao_id)
     {
         return response()->json(
-            CursoModel::getCursosPorInstituicao($instituicao_id)
+            json_encode(CursoModel::getCursosPorInstituicao($instituicao_id))
         );
     }
 }
